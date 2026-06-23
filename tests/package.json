@@ -2,8 +2,7 @@
   "name": "byte-snap-e2e",
   "private": true,
   "type": "module",
-  "dependencies": {
-    "@jayf0x/fluidity-js": "0.1.7",
-    "compress-shader-literals": "^0.0.4"
+  "devDependencies": {
+    "vite": "^5.0.0"
   }
 }

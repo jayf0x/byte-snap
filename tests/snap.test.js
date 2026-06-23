@@ -1,7 +1,7 @@
 import { expect, test } from 'bun:test';
 
-import { diff } from './diff.js';
-import { snap } from './snap.js';
+import { diff } from '../src/diff.js';
+import { snap } from '../src/snap.js';
 
 test('snap.text measures UTF-8 byte length', () => {
   expect(snap.text('abc').bytes.total).toBe(3);
