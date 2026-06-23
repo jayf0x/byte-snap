@@ -1,0 +1,9 @@
+{
+  "name": "byte-snap",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "unplugin": "^3.0.0"
+  }
+}
