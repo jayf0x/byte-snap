@@ -1,15 +1,15 @@
 # byte-snap
 
-> **Size matters.** Minify your GLSL & WGSL shader strings at build time — automatically, in any bundler.
+> **Size matters.** Snapshot file sizes, run your build step, diff the bytes — in any bundler.
 
 [![npm version](https://img.shields.io/npm/v/byte-snap?color=cb3837&logo=npm)](https://www.npmjs.com/package/byte-snap)
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/byte-snap?color=success)](https://bundlephobia.com/package/byte-snap)
 [![npm downloads](https://img.shields.io/npm/dm/byte-snap?color=success)](https://www.npmjs.com/package/byte-snap)
 [![license](https://img.shields.io/npm/l/byte-snap?color=blue)](./LICENSE)
 
-Your shaders ship with every comment, indent, and blank line you wrote them with. This strips all of it — block comments, line comments, redundant whitespace — from `glsl` / `wgsl` template literals, **before** your bundler minifies the rest. Smaller bundles, zero source changes, full sourcemaps.
+A tiny byte meter. `snap` a file, directory, string or buffer; `diff` two snapshots; get an honest before/after of what your build actually saved. Wire it into any bundler as a plugin and it prints the delta automatically when the build closes.
 
-Built on [unplugin](https://github.com/unjs/unplugin), so it runs in **Vite, Rollup, webpack, esbuild, Rspack, Rolldown & Farm** from one package.
+Zero runtime deps beyond [unplugin](https://github.com/unjs/unplugin), so the plugin runs in **Vite, Rollup, webpack, esbuild, Rspack, Rolldown & Farm** from one package.
 
 ## Install
 
@@ -18,89 +18,86 @@ npm i -D byte-snap
 # or: bun add -d byte-snap
 ```
 
-## Usage
+## Plugin
 
-Pick your bundler — same plugin, same options:
+Drop it in last and it measures your output dir across the build:
 
 ```js
-import { compressShaderLiterals } from 'byte-snap';
+import { measureSize } from 'byte-snap';
 
 // Vite        vite.config.js
-export default { plugins: [compressShaderLiterals.vite({ outputRatio: true })] };
+export default { plugins: [measureSize.vite({ dir: 'dist' })] };
 
-// Rollup      rollup.config.js   →  compressShaderLiterals.rollup({ ... })
-// webpack     webpack.config.js  →  compressShaderLiterals.webpack({ ... })
-// esbuild     build script       →  compressShaderLiterals.esbuild({ ... })
+// Rollup      rollup.config.js   →  measureSize.rollup({ ... })
+// webpack     webpack.config.js  →  measureSize.webpack({ ... })
+// esbuild     build script       →  measureSize.esbuild({ ... })
 // Rspack / Rolldown / Farm       →  .rspack() / .rolldown() / .farm()
 ```
 
-That's it. Shaders are compressed on the way through; everything else is untouched.
-
-## What it compresses
-
-```ts
-// Tagged template literal
-const vert = glsl`
-  // vertex shader  ← stripped
-  precision highp float;
-  void main() { gl_Position = vec4(0.0); }
-`;
-
-// Comment-prefixed template literal (great for editor syntax highlighting)
-const frag = /* wgsl */ `
-  /* fragment */
-  fn main() {}
-`;
-```
-
-→ both become a single tight line, no comments, no padding.
-
-## Options
-
-| Option        | Default                      | Description                             |
-| ------------- | ---------------------------- | --------------------------------------- |
-| `tags`        | `['glsl', 'wgsl', 'shader']` | Tag names / comment markers to match    |
-| `include`     | `[/\.[jt]sx?$/]`             | Files to process                        |
-| `exclude`     | `[/node_modules/, /dist/]`   | Files to skip                           |
-| `outputRatio` | `false`                      | Print a bytes-saved summary after build |
-
-With `outputRatio: true`:
+It snaps `dir` at `buildStart` and again at `closeBundle`, then prints:
 
 ```
 byte-snap
-────────────────────────
-215.00 B → 134.00 B
-saved: 81.00 B (37.67% smaller)
-shaders: 1
+────────────
+264.36 KB → 86.21 KB
+saved: 178.15 KB (67.39% smaller)
+files: 12 → 12
 ```
+
+| Option | Default  | Description          |
+| ------ | -------- | -------------------- |
+| `dir`  | `'dist'` | Directory to measure |
+
+## API
+
+Use the engine directly — no bundler required:
+
+```js
+import { diff, snap } from 'byte-snap';
+
+const before = snap.path('./dist'); // directory (recursive) or single file
+// ... run your build / compression / codemod ...
+const after = snap.path('./dist');
+
+const report = diff(before, after);
+report.print(); // logs the summary above
+report.json(); // { beforeBytes, afterBytes, savedBytes, savedPercent, beforeFiles, afterFiles, fileDelta }
+```
+
+### `snap`
+
+| Method              | Input                                   |
+| ------------------- | --------------------------------------- |
+| `snap.path(target)` | File path or directory (recursive)      |
+| `snap.text(str)`    | Raw string (measures UTF-8 byte length) |
+| `snap.buffer(buf)`  | `Buffer` or `ArrayBuffer`               |
+
+Each snapshot carries `{ files, bytes: { total, average, largest, smallest }, entries }`. Missing paths snapshot as empty (zero bytes, zero files) instead of throwing.
 
 ## Real-world stats
 
-Run against the actual shaders shipped in **[three.js](https://www.npmjs.com/package/three)**, **[ogl](https://www.npmjs.com/package/ogl)**, **[shader-park-core](https://www.npmjs.com/package/shader-park-core)**, **[curtains.js](https://www.npmjs.com/package/curtainsjs)** and more — measured by this plugin's own engine ([`tests/e2e.js`](tests/e2e.js)):
+byte-snap is a measurement tool, so we measure with it. Below: the bytes the [`compress-shader-literals`](https://www.npmjs.com/package/compress-shader-literals) build step strips out of real shipped packages, diffed by byte-snap's own engine ([`tests/e2e.js`](tests/e2e.js)):
 
 <!-- STATS:START -->
 
-| Package               | Shaders |    Before |     After |     Saved |
-| --------------------- | ------: | --------: | --------: | --------: |
-| `three`               |     281 | 240,772 B | 203,428 B | **15.5%** |
-| `@jayf0x/fluidity-js` |       9 |   9,524 B |   7,133 B | **25.1%** |
-| `ogl`                 |      22 |   6,109 B |   5,335 B | **12.7%** |
-| `shader-park-core`    |      18 |  10,794 B |   9,033 B | **16.3%** |
-| `curtainsjs`          |       7 |   3,406 B |   2,563 B | **24.8%** |
-| **Total**             |     337 | 270,605 B | 227,492 B | **15.9%** |
+| Package | Files | Before | After | Saved |
+| --- | ---: | ---: | ---: | ---: |
+| `@jayf0x/fluidity-js` | 1 | 90,807 B | 88,416 B | **2.6%** |
+| **Total** | 1 | 90,807 B | 88,416 B | **2.6%** |
 
-_337 real shaders from 5 package(s), compressed by this plugin's engine._
+_Measured by byte-snap across 1 package(s), running the `compress-shader-literals` build step._
 
 <!-- STATS:END -->
 
-Free bytes off code you already ship — no source changes. Marginal per shader, but it compounds across every shader in every bundle, and at infra scale even 1% is worth shipping.
+The table regenerates itself: `npm run test:e2e` re-runs the measurement and rewrites everything between the `STATS` markers. Add packages to [`tests/package.json`](tests/package.json) and they show up here. Swap in your own build step and you're benchmarking that instead.
 
 ## How it works
 
-1. Parses each matched file with Babel (TS/JSX aware).
-2. Finds tagged and comment-prefixed shader literals (see [What it compresses](#what-it-compresses)).
-3. Strips comments + collapses whitespace, rewriting via [`magic-string`](https://github.com/Rich-Harris/magic-string) so **sourcemaps stay intact**.
-4. Runs as a `pre` transform, so your bundler's own minifier still sees the result.
+1. `snap` walks a path (or reads a string/buffer) and records each file's byte size.
+2. `diff` subtracts two snapshots into a report — saved bytes, percent, file delta.
+3. The plugin does both around your build via unplugin's `buildStart` / `closeBundle` hooks, so it works the same in every bundler.
+
+No parsing, no sourcemaps, no magic — it just counts bytes, honestly.
 
 ## License
 
