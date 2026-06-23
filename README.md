@@ -15,7 +15,8 @@ Zero runtime deps beyond [unplugin](https://github.com/unjs/unplugin), so the pl
 
 ```sh
 npm i -D byte-snap
-# or: bun add -d byte-snap
+# or
+bun add -d byte-snap
 ```
 
 ## Plugin
@@ -80,10 +81,10 @@ byte-snap is a measurement tool, so we measure with it. Below: the bytes the [`c
 
 <!-- STATS:START -->
 
-| Package | Files | Before | After | Saved |
-| --- | ---: | ---: | ---: | ---: |
-| `@jayf0x/fluidity-js` | 1 | 90,807 B | 88,416 B | **2.6%** |
-| **Total** | 1 | 90,807 B | 88,416 B | **2.6%** |
+| Package               | Files |   Before |    After |    Saved |
+| --------------------- | ----: | -------: | -------: | -------: |
+| `@jayf0x/fluidity-js` |     1 | 90,807 B | 88,416 B | **2.6%** |
+| **Total**             |     1 | 90,807 B | 88,416 B | **2.6%** |
 
 _Measured by byte-snap across 1 package(s), running the `compress-shader-literals` build step._
 
