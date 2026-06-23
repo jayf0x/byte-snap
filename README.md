@@ -7,6 +7,8 @@
 [![npm downloads](https://img.shields.io/npm/dm/byte-snap?color=success)](https://www.npmjs.com/package/byte-snap)
 [![license](https://img.shields.io/npm/l/byte-snap?color=blue)](./LICENSE)
 
+![Alt Preview](./assets/preview.png)
+
 You add a minifier, swap a dependency, tweak a config — and _hope_ the bundle got smaller. Stop hoping. byte-snap snapshots your output and prints exactly how many bytes moved:
 
 ```
