@@ -15,7 +15,8 @@ import { fileURLToPath } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const pkgs = Object.keys(JSON.parse(readFileSync(resolve(here, 'package.json'), 'utf8')).dependencies ?? {});
 
-const BROWSER_GLOBAL = /\b(window|document|navigator|self|HTMLElement|customElements|requestAnimationFrame)\b is not defined/;
+const BROWSER_GLOBAL =
+  /\b(window|document|navigator|self|HTMLElement|customElements|requestAnimationFrame)\b is not defined/;
 
 let failed = 0;
 const results = [];
