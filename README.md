@@ -9,7 +9,13 @@
 
 ⭐ **Star this repository to support development and help others discover it.**
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jayf0x/byte-snap&type=Date)](https://star-history.com/#jayf0x/byte-snap&Date)
+<a href="https://star-history.com/#jayf0x/byte-snap&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=jayf0x/byte-snap&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=jayf0x/byte-snap&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=jayf0x/byte-snap&type=Date" />
+  </picture>
+</a>
 
 ![Alt Preview](./assets/preview.png)
 
