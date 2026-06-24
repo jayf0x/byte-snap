@@ -35,3 +35,13 @@ await compress(
     },
   })
 );
+
+// Smoke check: tree-shaking has silently emptied this bundle before (sideEffects:false
+// + re-export-only entry → empty file that still "exports" undefined bindings). Fail the
+// build loudly if any public export went missing, so a broken bundle never ships.
+const mod = await import(src);
+const missing = ['snap', 'diff', 'measureSize'].filter((k) => !mod[k]);
+if (missing.length) {
+  console.error(`\n✗ dist bundle is missing exports: ${missing.join(', ')} — build is broken.`);
+  process.exit(1);
+}

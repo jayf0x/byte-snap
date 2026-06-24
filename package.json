@@ -40,7 +40,6 @@
   "files": [
     "dist"
   ],
-  "sideEffects": false,
   "scripts": {
     "build": "bun build src/index.js --outdir dist --entry-naming index.js --target node --format esm --external unplugin && cp src/index.d.ts dist/index.d.ts && node scripts/compress-dist.js",
     "typecheck": "tsc --noEmit --strict --skipLibCheck src/index.d.ts",
