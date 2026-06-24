@@ -16,7 +16,7 @@ tests/
   snap.test.js unit tests, run by `bun test` from root
   e2e.js       real Vite build + a local timeout plugin, asserts the plugin lifecycle works
 scripts/
-  compress-dist.js  post-build gzip+brotli of dist/index.js
+  publish-npm.sh    release flow (bump + build + test + commit + tag)
 ```
 
 No build step needed to work on the engine — `src/*.js` is plain ESM, import it directly.
