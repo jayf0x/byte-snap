@@ -29,20 +29,21 @@
   "bugs": {
     "url": "https://github.com/jayF0x/byte-snap/issues"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "bun build src/index.js --outdir dist --entry-naming index.js --target node --format esm --external unplugin && cp src/index.d.ts dist/index.d.ts",
+    "build": "esbuild src/index.js --bundle --outfile=dist/index.js --platform=node --format=esm --external:unplugin && cp src/index.d.ts dist/index.d.ts && bun build src/index.js --outdir dist --entry-naming index.cjs --target node --format cjs --external unplugin",
     "typecheck": "tsc --noEmit --strict --skipLibCheck src/index.d.ts",
     "test": "bun test",
     "test:run": "bun test",
@@ -50,7 +51,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "npm:deploy": "bash ./scripts/publish-npm.sh",
-    "rm:stalepr": "git branch -vv | grep '\\[gone\\]' | awk '{print $1}' | xargs git branch -D"
+    "rm:stalepr": "git branch -vv | grep '\\[gone\\]' | awk '{print $1}' | xargs git branch -D",
+    "size": "size-limit"
   },
   "dependencies": {
     "unplugin": "^3.0.0"
@@ -58,6 +60,18 @@
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.0.0",
     "prettier": "^3.0.0",
-    "typescript": "^5.6.0"
-  }
+    "typescript": "^5.6.0",
+    "size-limit": "^11.0.0",
+    "@size-limit/file": "^11.0.0",
+    "esbuild": "^0.25.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "1.3 kB"
+    }
+  ]
 }
