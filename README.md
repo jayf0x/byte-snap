@@ -70,18 +70,9 @@ const stats = diff(before, after).json();
 // }
 ```
 
-Can even check that your custom plugin worked:
-
-```js
-if (stats.savedBytes <= 0) {
-  console.error(`Bundle grew by ${-stats.savedBytes} bytes 🚨`);
-  process.exit(1);
-}
-```
-
 ## Exotic use cases
 
-**Fail build if custom plugin did not minify**
+**Fail build if a custom plugin didn't save enough**
 
 ```js
 const before = snap.path('./dist');
@@ -89,9 +80,9 @@ await runYourMinifier();
 
 const { savedBytes } = diff(before, snap.path('./dist')).json();
 
-// expect to minify +100 bytes
-if (savedBytes <= 100) {
-  console.error(`Bundle not met baseline of. Reduced ${-savedBytes} bytes 🚨`);
+// expect at least 100 bytes saved
+if (savedBytes < 100) {
+  console.error(`Baseline not met. Saved only ${savedBytes} bytes 🚨`);
   process.exit(1);
 }
 ```
