@@ -7,16 +7,33 @@
   "keywords": [
     "size",
     "bundle-size",
+    "bundle",
+    "bundler",
     "filesize",
+    "file-size",
     "diff",
     "snapshot",
     "measure",
     "bytes",
+    "byte-counter",
     "build",
+    "build-size",
+    "dist-size",
+    "output-size",
+    "size-check",
+    "size-limit",
+    "performance",
+    "minify",
+    "compression",
+    "gzip",
+    "brotli",
     "vite-plugin",
     "rollup-plugin",
     "webpack-plugin",
     "esbuild-plugin",
+    "rspack-plugin",
+    "rolldown-plugin",
+    "farm-plugin",
     "unplugin"
   ],
   "license": "MIT",
@@ -58,12 +75,13 @@
     "unplugin": "^3.0.0"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^5.0.0",
-    "prettier": "^3.0.0",
-    "typescript": "^5.6.0",
-    "size-limit": "^11.0.0",
     "@size-limit/file": "^11.0.0",
-    "esbuild": "^0.25.0"
+    "@trivago/prettier-plugin-sort-imports": "^5.0.0",
+    "byte-snap": "^1.0.5",
+    "esbuild": "^0.25.0",
+    "prettier": "^3.0.0",
+    "size-limit": "^11.0.0",
+    "typescript": "^5.6.0"
   },
   "engines": {
     "node": ">=18"

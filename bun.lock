@@ -10,6 +10,7 @@
       "devDependencies": {
         "@size-limit/file": "^11.0.0",
         "@trivago/prettier-plugin-sort-imports": "^5.0.0",
+        "byte-snap": "^1.0.5",
         "esbuild": "^0.25.0",
         "prettier": "^3.0.0",
         "size-limit": "^11.0.0",
@@ -101,6 +102,8 @@
     "@size-limit/file": ["@size-limit/file@11.2.0", "", { "peerDependencies": { "size-limit": "11.2.0" } }, "sha512-OZHE3putEkQ/fgzz3Tp/0hSmfVo3wyTpOJSRNm6AmcwX4Nm9YtTfbQQ/hZRwbBFR23S7x2Sd9EbqYzngKwbRoA=="],
 
     "@trivago/prettier-plugin-sort-imports": ["@trivago/prettier-plugin-sort-imports@5.2.2", "", { "dependencies": { "@babel/generator": "^7.26.5", "@babel/parser": "^7.26.7", "@babel/traverse": "^7.26.7", "@babel/types": "^7.26.7", "javascript-natural-sort": "^0.7.1", "lodash": "^4.17.21" }, "peerDependencies": { "@vue/compiler-sfc": "3.x", "prettier": "2.x - 3.x", "prettier-plugin-svelte": "3.x", "svelte": "4.x || 5.x" }, "optionalPeers": ["@vue/compiler-sfc", "prettier-plugin-svelte", "svelte"] }, "sha512-fYDQA9e6yTNmA13TLVSA+WMQRc5Bn/c0EUBditUHNfMMxN7M82c38b1kEggVE3pLpZ0FwkwJkUEKMiOi52JXFA=="],
+
+    "byte-snap": ["byte-snap@1.0.5", "", { "dependencies": { "unplugin": "^3.0.0" } }, "sha512-qo4GoCK+lTD9k2DJD7TfGC1wtidBOzNig7tmRJ8Oamf51j7m5U3mQR+2AmUXoVyelDqoVhMCD+LG/JV7aBRYhQ=="],
 
     "bytes-iec": ["bytes-iec@3.1.1", "", {}, "sha512-fey6+4jDK7TFtFg/klGSvNKJctyU7n2aQdnM+CO0ruLPbqqMOM8Tio0Pc+deqUeVKX1tL5DQep1zQ7+37aTAsA=="],
 
