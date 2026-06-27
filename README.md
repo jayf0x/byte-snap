@@ -7,8 +7,6 @@
 [![npm downloads](https://img.shields.io/npm/dm/byte-snap?color=success)](https://www.npmjs.com/package/byte-snap)
 [![license](https://img.shields.io/npm/l/byte-snap?color=blue)](./LICENSE)
 
-⭐ **Star this repository to support development and help others discover it.**
-
 <!-- <a href="https://star-history.com/#jayf0x/byte-snap&Date">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=jayf0x/byte-snap&type=Date&theme=dark" />
@@ -18,6 +16,8 @@
 </a> -->
 
 ![Alt Preview](./assets/preview.png)
+
+> ⭐ **Star [this repository](https://github.com/jayf0x/byte-snap) if you’d like to support its growth**
 
 You add a minifier, swap a dependency, tweak a config — and _hope_ the bundle got smaller. Stop hoping. byte-snap snapshots your output and prints exactly how many bytes moved:
 
