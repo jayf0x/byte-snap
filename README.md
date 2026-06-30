@@ -23,10 +23,10 @@ bun add -d byte-snap
 
 ```js
 // vite.config.js
-import { measureSize } from 'byte-snap';
+import { snapSize } from 'byte-snap';
 
 export default {
-  plugins: [measureSize.vite({ dir: 'dist' })],
+  plugins: [snapSize.vite({ dir: 'dist' })],
 };
 ```
 
@@ -44,6 +44,40 @@ files: 4 → 2
 | Option | Default  | Description          |
 | ------ | -------- | -------------------- |
 | `dir`  | `'dist'` | Directory to measure |
+
+> `measureSize` is a deprecated alias of `snapSize` — same plugin, kept for back-compat.
+
+## Measure one plugin
+
+`snapPlugins` shows what a single plugin (or group) changed in the final build, by rebuilding
+without it and diffing. Drop it into `plugins: [...]` where that plugin would go:
+
+```js
+// vite.config.js
+import { snapPlugins } from 'byte-snap';
+import compress from 'some-compression-plugin';
+
+export default {
+  plugins: [snapPlugins([compress], { buildCmd: 'vite build' })],
+};
+```
+
+```sh
+$ vite build
+
+size: plugin some-compression-plugin
+────────────
+1.91 KB → 338.00 B
+saved: 1.58 KB (82.74% smaller)
+files: 1 → 1
+```
+
+`buildCmd` is **required** — it's the exact command re-run (once, in a child process) to produce
+the without-plugin baseline, so the comparison is byte-identical except for the measured plugin.
+
+| Option     | Required | Description                                             |
+| ---------- | -------- | ------------------------------------------------------- |
+| `buildCmd` | yes      | The build command re-run to produce the baseline build. |
 
 ## Custom usage
 
@@ -107,13 +141,14 @@ diff(snap.text(source), snap.text(minify(source))).print();
 
 ## API
 
-| Call                 | Returns / does                                                  |
-| -------------------- | --------------------------------------------------------------- |
-| `snap.path(target)`  | Snapshot a file or directory (recursive). Missing path → empty. |
-| `snap.text(str)`     | Snapshot a string's UTF-8 byte length.                          |
-| `snap.buffer(buf)`   | Snapshot a `Buffer` or `ArrayBuffer`.                           |
-| `diff(a, b)`         | Compare two snapshots → `{ print(), json() }`.                  |
-| `measureSize.vite()` | Plugin (and `.rollup`, `.webpack`, `.esbuild`, `.rspack`, …).   |
+| Call                  | Returns / does                                                  |
+| --------------------- | --------------------------------------------------------------- |
+| `snap.path(target)`   | Snapshot a file or directory (recursive). Missing path → empty. |
+| `snap.text(str)`      | Snapshot a string's UTF-8 byte length.                          |
+| `snap.buffer(buf)`    | Snapshot a `Buffer` or `ArrayBuffer`.                           |
+| `diff(a, b)`          | Compare two snapshots → `{ print(title?), json() }`.            |
+| `snapSize.vite()`     | Whole-build plugin (and `.rollup`, `.webpack`, `.esbuild`, …).  |
+| `snapPlugins([p], o)` | Plugin array measuring what plugin `p` changed (`o.buildCmd`).  |
 
 Each snapshot also exposes per-file detail: `{ files, bytes: { total, average, largest, smallest }, entries }`.
 

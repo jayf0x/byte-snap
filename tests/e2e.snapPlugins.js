@@ -1,9 +1,9 @@
 /**
  * E2E: real Vite build of tests/fixture using a real third-party plugin
- * (@rollup/plugin-replace) wrapped by measurePlugins. Proves the rebuild-without-it
+ * (@rollup/plugin-replace) wrapped by snapPlugins. Proves the rebuild-without-it
  * mechanism end to end and that the printed before/after reflects the real delta.
  *
- *   node e2e.measurePlugins.js
+ *   node e2e.snapPlugins.js
  */
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -30,8 +30,8 @@ const before = toB(m[1], m[2]);
 const after = toB(m[3], m[4]);
 assert.ok(before > after, `expected shrink, got ${before} → ${after}`);
 
-const saved = out.match(/smaller by ([\d.]+) (B|KB)/);
-assert.ok(saved, 'did not report "smaller by"');
+const saved = out.match(/saved: ([\d.]+) (B|KB)/);
+assert.ok(saved, 'did not report "saved:"');
 assert.ok(toB(saved[1], saved[2]) > 1000, `expected >1KB saved, got ${saved[1]} ${saved[2]}`);
 
-console.log(`\n✓ measurePlugins e2e passed (real before/after: ${m[0]})`);
+console.log(`\n✓ snapPlugins e2e passed (real before/after: ${m[0]})`);

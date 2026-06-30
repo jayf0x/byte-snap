@@ -3,7 +3,7 @@ import { createUnplugin } from 'unplugin';
 import { diff } from './diff.js';
 import { snap } from './snap.js';
 
-export const measureSize = createUnplugin((options = {}) => {
+export const snapSize = createUnplugin((options = {}) => {
   const dir = options.dir ?? 'dist';
   let before;
 

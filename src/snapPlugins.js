@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { rmSync } from 'node:fs';
 
-import { diff, fmt } from './diff.js';
+import { diff } from './diff.js';
 import { snap } from './snap.js';
 
 // Env channel for the baseline child build: which instance to drop, where to write.
@@ -31,14 +31,14 @@ function names(instances, id) {
  *
  * Returns a plugin array — drop it into `plugins: [...]` in place of the plugin you measure.
  */
-export function measurePlugins(factories, options) {
+export function snapPlugins(factories, options) {
   if (!options || typeof options.buildCmd !== 'string' || !options.buildCmd.trim()) {
     throw new TypeError(
-      'measurePlugins: `buildCmd` is required, e.g. measurePlugins([myPlugin], { buildCmd: "npm run build" })'
+      'snapPlugins: `buildCmd` is required, e.g. snapPlugins([myPlugin], { buildCmd: "npm run build" })'
     );
   }
   if (!Array.isArray(factories) || factories.length === 0) {
-    throw new TypeError('measurePlugins: first argument must be a non-empty array of plugin factories');
+    throw new TypeError('snapPlugins: first argument must be a non-empty array of plugin factories');
   }
   const buildCmd = options.buildCmd;
   const id = String(counter++);
@@ -83,13 +83,7 @@ export function measurePlugins(factories, options) {
         const before = snap.path(baselineDir); // without the plugin
         rmSync(baselineDir, { recursive: true, force: true });
 
-        const s = diff(before, after).json();
-        const dir = s.savedBytes >= 0 ? 'smaller' : 'larger';
-        console.log(`\nsize: plugin ${names(instances, id)}`);
-        console.log('────────────');
-        console.log(`${fmt(s.beforeBytes)} → ${fmt(s.afterBytes)}  (without → with)`);
-        console.log(`${dir} by ${fmt(Math.abs(s.savedBytes))} (${Math.abs(s.savedPercent).toFixed(2)}%)`);
-        console.log(`files: ${s.beforeFiles} → ${s.afterFiles}\n`);
+        diff(before, after).print(`size: plugin ${names(instances, id)}`);
       },
     },
   ];

@@ -1,16 +1,18 @@
 # byte-snap — agent guide
 
 A byte meter. Snapshot file sizes, diff two snapshots, see what a build step saved.
-Ships as a universal bundler plugin (`measureSize`) + a standalone `snap`/`diff` engine.
+Ships as universal bundler plugins (`snapSize`, `snapPlugins`) + a standalone `snap`/`diff` engine.
+(`measureSize` is a deprecated alias of `snapSize`.)
 
 ## Layout
 
 ```
 src/
-  index.js     public exports: snap, diff, measureSize
+  index.js     public exports: snap, diff, snapSize (+ measureSize alias), snapPlugins
   snap.js      snap.path / snap.text / snap.buffer → Snapshot
-  diff.js      diff(before, after) → { print(), json() }
-  plugin.js    measureSize: unplugin wrapper, snaps `dir` at buildStart + closeBundle
+  diff.js      diff(before, after) → { print(title?), json() }
+  snapSize.js  snapSize: unplugin wrapper, snaps `dir` at buildStart + closeBundle
+  snapPlugins.js  snapPlugins: rebuild-without-a-plugin, diff the delta
   index.d.ts   hand-written types (source of truth, copied to dist on build)
 tests/
   snap.test.js unit tests, run by `bun test` from root

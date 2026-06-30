@@ -30,8 +30,8 @@ export interface DiffStats {
 export interface Report {
   /** Raw numbers, e.g. for asserting in tests or piping to JSON. */
   json(): DiffStats;
-  /** Pretty-print the diff to the console. */
-  print(): void;
+  /** Pretty-print the diff to the console. `title` is the header line (default `'byte-snap'`). */
+  print(title?: string): void;
 }
 
 export declare const snap: {
@@ -46,13 +46,16 @@ export declare const snap: {
 /** Diff two snapshots into a printable report. */
 export declare function diff(before: Snapshot, after: Snapshot): Report;
 
-export interface MeasureSizeOptions {
+export interface SnapSizeOptions {
   /** Directory to snapshot before and after the build. Default: `'dist'`. */
   dir?: string;
 }
 
 /** Universal plugin: snaps `dir` at buildStart and closeBundle, then prints the diff. */
-export declare const measureSize: UnpluginInstance<MeasureSizeOptions | undefined>;
+export declare const snapSize: UnpluginInstance<SnapSizeOptions | undefined>;
+
+/** @deprecated Renamed to `snapSize`. Kept as an alias; will be removed in a future major. */
+export declare const measureSize: UnpluginInstance<SnapSizeOptions | undefined>;
 
 /** Minimal structural plugin shape — compatible with Vite/Rollup `Plugin` objects. */
 export interface BundlerPlugin {
@@ -63,7 +66,7 @@ export interface BundlerPlugin {
 /** A plugin factory: the same call you'd put in `plugins: [...]`, e.g. `react`. */
 export type PluginFactory = () => BundlerPlugin | BundlerPlugin[];
 
-export interface MeasurePluginsOptions {
+export interface SnapPluginsOptions {
   /**
    * Build command re-run as a child process to produce the baseline (without the measured
    * plugin). Must be the exact command that builds this config. Required — no default.
@@ -75,4 +78,4 @@ export interface MeasurePluginsOptions {
  * Measure what a plugin (or group) changed in the final build, by rebuilding without it and
  * diffing. Returns a plugin array to splice into `plugins: [...]` where the plugin would go.
  */
-export declare function measurePlugins(factories: PluginFactory[], options: MeasurePluginsOptions): BundlerPlugin[];
+export declare function snapPlugins(factories: PluginFactory[], options: SnapPluginsOptions): BundlerPlugin[];

@@ -27,8 +27,8 @@ export function diff(before, after) {
 
   return {
     json: () => stats,
-    print() {
-      console.log('\nbyte-snap');
+    print(title = 'byte-snap') {
+      console.log(`\n${title}`);
       console.log('────────────');
       console.log(`${fmt(beforeBytes)} → ${fmt(afterBytes)}`);
       console.log(`saved: ${fmt(savedBytes)} (${savedPercent.toFixed(2)}% smaller)`);

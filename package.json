@@ -1,6 +1,6 @@
 {
   "name": "byte-snap",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "sideEffects": false,
   "type": "module",
   "description": "Size matters. Snapshot and diff file sizes around any build step — a universal byte meter for Vite, Rollup, webpack, esbuild & more.",
@@ -64,7 +64,7 @@
     "typecheck": "tsc --noEmit --strict --skipLibCheck src/index.d.ts",
     "test": "bun test",
     "test:run": "bun test",
-    "test:e2e": "cd tests && bun install && node e2e.js && node e2e.measurePlugins.js",
+    "test:e2e": "cd tests && bun install && node e2e.js && node e2e.snapPlugins.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "npm:deploy": "bash ./scripts/publish-npm.sh",
