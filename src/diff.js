@@ -1,4 +1,4 @@
-function fmt(bytes) {
+export function fmt(bytes) {
   const units = ['B', 'KB', 'MB', 'GB'];
   let v = bytes,
     u = 0;
