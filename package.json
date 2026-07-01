@@ -1,6 +1,6 @@
 {
   "name": "byte-snap",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "sideEffects": false,
   "type": "module",
   "description": "Size matters. Snapshot and diff file sizes around any build step — a universal byte meter for Vite, Rollup, webpack, esbuild & more.",
