@@ -46,16 +46,16 @@ export declare const snap: {
 /** Diff two snapshots into a printable report. */
 export declare function diff(before: Snapshot, after: Snapshot): Report;
 
-export interface SnapSizeOptions {
+export interface SnapBuildOptions {
   /** Directory to snapshot before and after the build. Default: `'dist'`. */
   dir?: string;
 }
 
 /** Universal plugin: snaps `dir` at buildStart and closeBundle, then prints the diff. */
-export declare const snapSize: UnpluginInstance<SnapSizeOptions | undefined>;
+export declare const snapBuild: UnpluginInstance<SnapBuildOptions | undefined>;
 
-/** @deprecated Renamed to `snapSize`. Kept as an alias; will be removed in a future major. */
-export declare const measureSize: UnpluginInstance<SnapSizeOptions | undefined>;
+/** @deprecated Renamed to `snapBuild`. Kept as an alias; will be removed in a future major. */
+export declare const measureSize: UnpluginInstance<SnapBuildOptions | undefined>;
 
 /** Minimal structural plugin shape — compatible with Vite/Rollup `Plugin` objects. */
 export interface BundlerPlugin {

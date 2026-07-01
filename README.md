@@ -23,10 +23,10 @@ bun add -d byte-snap
 
 ```js
 // vite.config.js
-import { snapSize } from 'byte-snap';
+import { snapBuild } from 'byte-snap';
 
 export default {
-  plugins: [snapSize.vite({ dir: 'dist' })],
+  plugins: [snapBuild.vite({ dir: 'dist' })],
 };
 ```
 
@@ -45,7 +45,7 @@ files: 4 → 2
 | ------ | -------- | -------------------- |
 | `dir`  | `'dist'` | Directory to measure |
 
-> `measureSize` is a deprecated alias of `snapSize` — same plugin, kept for back-compat.
+> `measureSize` is a deprecated alias of `snapBuild` — same plugin, kept for back-compat.
 
 ## Measure one plugin
 
@@ -147,7 +147,7 @@ diff(snap.text(source), snap.text(minify(source))).print();
 | `snap.text(str)`      | Snapshot a string's UTF-8 byte length.                          |
 | `snap.buffer(buf)`    | Snapshot a `Buffer` or `ArrayBuffer`.                           |
 | `diff(a, b)`          | Compare two snapshots → `{ print(title?), json() }`.            |
-| `snapSize.vite()`     | Whole-build plugin (and `.rollup`, `.webpack`, `.esbuild`, …).  |
+| `snapBuild.vite()`    | Whole-build plugin (and `.rollup`, `.webpack`, `.esbuild`, …).  |
 | `snapPlugins([p], o)` | Plugin array measuring what plugin `p` changed (`o.buildCmd`).  |
 
 Each snapshot also exposes per-file detail: `{ files, bytes: { total, average, largest, smallest }, entries }`.
