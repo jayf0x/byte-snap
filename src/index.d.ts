@@ -69,13 +69,14 @@ export type PluginFactory = () => BundlerPlugin | BundlerPlugin[];
 export interface SnapPluginsOptions {
   /**
    * Build command re-run as a child process to produce the baseline (without the measured
-   * plugin). Must be the exact command that builds this config. Required — no default.
+   * plugin). Defaults to `'npm run build'` — runs your package.json `build` script,
+   * PM-agnostic, with `node_modules/.bin` on PATH. Override for a non-standard command.
    */
-  buildCmd: string;
+  buildCmd?: string;
 }
 
 /**
  * Measure what a plugin (or group) changed in the final build, by rebuilding without it and
  * diffing. Returns a plugin array to splice into `plugins: [...]` where the plugin would go.
  */
-export declare function snapPlugins(factories: PluginFactory[], options: SnapPluginsOptions): BundlerPlugin[];
+export declare function snapPlugins(factories: PluginFactory[], options?: SnapPluginsOptions): BundlerPlugin[];

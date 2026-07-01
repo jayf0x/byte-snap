@@ -58,7 +58,7 @@ import { snapPlugins } from 'byte-snap';
 import compress from 'some-compression-plugin';
 
 export default {
-  plugins: [snapPlugins([compress], { buildCmd: 'vite build' })],
+  plugins: [snapPlugins([compress])],
 };
 ```
 
@@ -72,12 +72,14 @@ saved: 1.58 KB (82.74% smaller)
 files: 1 → 1
 ```
 
-`buildCmd` is **required** — it's the exact command re-run (once, in a child process) to produce
-the without-plugin baseline, so the comparison is byte-identical except for the measured plugin.
+`snapPlugins` re-runs your build command once (in a child process, without the measured
+plugin) to produce the baseline — so the diff is byte-identical except for that plugin's
+effect. It defaults to `npm run build`, which runs your `package.json` `build` script
+(PM-agnostic, with local bins on PATH). Pass `buildCmd` for a non-standard command.
 
-| Option     | Required | Description                                             |
-| ---------- | -------- | ------------------------------------------------------- |
-| `buildCmd` | yes      | The build command re-run to produce the baseline build. |
+| Option     | Default           | Description                                                 |
+| ---------- | ----------------- | ----------------------------------------------------------- |
+| `buildCmd` | `'npm run build'` | Build command re-run (in a child process) for the baseline. |
 
 ## Custom usage
 

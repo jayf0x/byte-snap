@@ -26,21 +26,18 @@ function names(instances, id) {
 
 /**
  * Measure what a plugin (or group) actually changed in the final build, by rebuilding
- * WITHOUT it and diffing. `buildCmd` is required and is re-run as a child process with the
- * exact same config, so the baseline is byte-identical except for the measured plugin.
+ * WITHOUT it and diffing. `buildCmd` defaults to `npm run build` (which runs your
+ * package.json `build` script, PM-agnostic, with local bins on PATH). Re-run in a child
+ * process with the exact same config, so the baseline is byte-identical except for the plugin.
  *
  * Returns a plugin array — drop it into `plugins: [...]` in place of the plugin you measure.
  */
-export function snapPlugins(factories, options) {
-  if (!options || typeof options.buildCmd !== 'string' || !options.buildCmd.trim()) {
-    throw new TypeError(
-      'snapPlugins: `buildCmd` is required, e.g. snapPlugins([myPlugin], { buildCmd: "npm run build" })'
-    );
-  }
+export function snapPlugins(factories, options = {}) {
   if (!Array.isArray(factories) || factories.length === 0) {
     throw new TypeError('snapPlugins: first argument must be a non-empty array of plugin factories');
   }
-  const buildCmd = options.buildCmd;
+
+  const buildCmd = options.buildCmd?.trim() || 'npm run build';
   const id = String(counter++);
   const omit = process.env[OMIT];
   const instances = instantiate(factories);
