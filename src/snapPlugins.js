@@ -68,9 +68,9 @@ export function snapPlugins(factories, options = {}) {
       closeBundle() {
         const after = snap.path(outDir); // with the plugin
         const baselineDir = `${outDir}-byte-snap-baseline`;
-        const [cmd, ...args] = buildCmd.split(' ');
-        const r = spawnSync(cmd, args, {
+        const r = spawnSync(buildCmd, {
           stdio: 'inherit',
+          shell: true,
           env: { ...process.env, [OMIT]: id, [OUTDIR]: baselineDir },
         });
         if (r.status !== 0) {
