@@ -1,0 +1,5 @@
+# Backlog
+
+- **Generic default title makes multiple `diff().print()` calls indistinguishable in logs.** `print(title = 'byte-snap')` ([src/diff.js:30](src/diff.js:30)) means any caller that forgets (or doesn't bother) to pass a title looks identical to every other byte-snap consumer in the same build output — a real plugin's diff got mistaken for noise because of this. Consider requiring/encouraging a label in docs, or warning when two default-titled reports print in the same run.
+
+- **`savedPercent` is always "% of the whole snapshot," which misleads when the snapshot mixes unrelated content.** `diff()` ([src/diff.js:12](src/diff.js:12)) computes percent against `before.bytes.total` — fine when snapshotting exactly what changed, but when someone snaps a whole bundle to measure one subsystem's change (e.g. shader literals inside a much larger JS bundle), the % reported (~4%) and the % that's actually meaningful for that subsystem (~20%) diverge and both "look correct." No fix needed in-library, but doc note or an optional `baseline` param (e.g. "% of these bytes specifically") could help — flagging for now, not clear it's worth the API surface.
