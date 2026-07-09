@@ -9,6 +9,8 @@ export function fmt(bytes) {
   return `${v.toFixed(2)} ${units[u]}`;
 }
 
+let defaultTitleUsed = false;
+
 export function diff(before, after) {
   const beforeBytes = before.bytes.total;
   const afterBytes = after.bytes.total;
@@ -28,6 +30,12 @@ export function diff(before, after) {
   return {
     json: () => stats,
     print(title = 'byte-snap') {
+      if (title === 'byte-snap') {
+        if (defaultTitleUsed) {
+          console.warn('byte-snap: multiple diff().print() calls with no title — pass one to tell them apart in logs.');
+        }
+        defaultTitleUsed = true;
+      }
       console.log(`\n${title}`);
       console.log('────────────');
       console.log(`${fmt(beforeBytes)} → ${fmt(afterBytes)}`);
