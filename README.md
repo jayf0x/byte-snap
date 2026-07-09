@@ -81,7 +81,7 @@ effect. It defaults to `npm run build`, which runs your `package.json` `build` s
 | ---------- | ----------------- | ----------------------------------------------------------- |
 | `buildCmd` | `'npm run build'` | Build command re-run (in a child process) for the baseline. |
 
-`savedPercent` is always relative to the *whole* snapshot's `beforeBytes` — not to some
+`savedPercent` is always relative to the _whole_ snapshot's `beforeBytes` — not to some
 subsystem within it. If you snapshot a whole bundle to measure one plugin's effect, the
 percent shown is "that many bytes off the whole bundle," which can look small even when the
 plugin's own footprint shrank a lot. Use `savedBytes` for the absolute number if that's what
