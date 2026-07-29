@@ -9,8 +9,6 @@
 
 ![Preview](./assets/preview.png)
 
-> ⭐ **Star [this repository](https://github.com/jayf0x/byte-snap) if you'd like to support its growth**
-
 ## Install
 
 ```sh
