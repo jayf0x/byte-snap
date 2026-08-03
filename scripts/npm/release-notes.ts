@@ -39,7 +39,7 @@ if (!commits) {
   process.exit(0);
 }
 
-const prompt = `Summarize an npm release of "byte-snap" (a byte counter for your build — snap before, snap after, see the delta — shipped as a Vite/Rollup/webpack/esbuild/Rspack/Rolldown/Farm plugin via unplugin).
+const prompt = `Summarize an npm release of "git-gimme" (a giget-backed \`git gimme\` subcommand for downloading a single file or folder from a repo without a full clone).
 
 New version: ${version}
 Previous tag: ${prevTag || '(none)'}

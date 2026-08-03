@@ -5,14 +5,10 @@ set -euo pipefail
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 [[ "$BRANCH" != "main" ]] && { echo "✗ Must be on main (currently: $BRANCH)"; exit 1; }
 
-if ! git diff --quiet || ! git diff --cached --quiet; then
-  echo "✗ Uncommitted changes — stash or commit first"
-  exit 1
-fi
-
 NAME=$(node -p "require('./package.json').name")
 if ! npm view "$NAME" version >/dev/null 2>&1; then
-  echo "✗ $NAME has never been published — publish an initial version by hand first"
+  echo "✗ $NAME has never been published — run 'bun run repo:bootstrap' first (trusted"
+  echo "  publishing can't be configured on npmjs.com until a first version exists)"
   exit 1
 fi
 
@@ -21,10 +17,6 @@ bun run scan
 bun run build
 bun run typecheck
 bun run test
-
-# ── refresh real-world stats (local only) ────────────────────────────────────
-bun run test:e2e
-
 bun run format
 
 # ── version bump ──────────────────────────────────────────────────────────────
